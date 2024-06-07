@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class TrackManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Tiles;
+    [SerializeField] private GameObject player;
     int randomTile;
 
     private void OnTriggerEnter(Collider other)

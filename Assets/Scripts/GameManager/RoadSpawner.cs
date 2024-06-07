@@ -1,80 +1,78 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class RoadSpawner : MonoBehaviour {
+public class RoadSpawner : MonoBehaviour
+{
+    public GameObject[] tilePrefabs;
+    private List<GameObject> activeTiles;
+    
+    private Transform playerTransform;
+    private float spawnZ = -50.0f;
+    private float tileLength = 100.0f;
+    private int amountTilesOnScreen = 4;
+    private float safeZone = 125.0f;
+    private int lastPrefabIndex = 0;
 
-    public GameObject [] Prefabs;
-    [SerializeField] private Transform Player;
-
-    private List<GameObject> ActivePrefabs;
-
-
-    public float BackArea = 200.0f;
-    public int PrefabsOnScreen = 4;
-    public int LastPrefab = 0;
-    public float SpawnPrefab = -100.0f;
-    public float PrefabLength = 99.0f;
-
-
-    private void Start () 
+    private void Start()
     {
-        ActivePrefabs = new List<GameObject> ();
-        Player = GameObject.FindGameObjectWithTag ("Player").transform;
+        activeTiles = new List<GameObject>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        for (int i = 0; i < PrefabsOnScreen; i++) 
+        for (int i = 0; i < amountTilesOnScreen; i++)
         {
-            if (i < 4)
-                Spawn (0);
-            else
-                Spawn ();       
-        }
-    } 
-
-
-    private void Update () 
-    {
-        if (Player.position.z - BackArea > (SpawnPrefab - PrefabsOnScreen * PrefabLength)) 
-        {
-            Spawn ();
-            DeletePrefab ();
+            if (i < 2)
+            {
+                SpawnTile(0);
+            }
+            SpawnTile();
         }
     }
 
-
-    private void Spawn (int prefabIndex = -1)
+    private void Update()
     {
-        GameObject myPrefab;
+        if (playerTransform.position.z - safeZone > (spawnZ - amountTilesOnScreen * tileLength))
+        {
+            SpawnTile();
+        }
+    }
+
+    private void SpawnTile(int prefabIndex = -1)
+    {
+        GameObject go;
         if (prefabIndex == -1)
-
-            myPrefab = Instantiate (Prefabs [RandomPrefabs ()] as GameObject);
-        else
-            myPrefab = Instantiate (Prefabs [prefabIndex] as GameObject);
-
-        myPrefab.transform.SetParent (transform);
-        myPrefab.transform.position = Vector3.forward * SpawnPrefab;
-        SpawnPrefab += PrefabLength;
-        ActivePrefabs.Add (myPrefab);
-    }
-
-    private void DeletePrefab ()
-    {
-        Destroy (ActivePrefabs [0]);
-        ActivePrefabs.RemoveAt (0);
-    }
-
-
-    private int RandomPrefabs ()
-    {
-        if (Prefabs.Length <= 1)
-            return 0;
-        int randomIndex = LastPrefab;
-        while (randomIndex == LastPrefab) 
         {
-            randomIndex = Random.Range (0, Prefabs.Length);
+            go = Instantiate(tilePrefabs [RandomPrefabsIndex()]) as GameObject;
+        }
+        else
+        {
+            go = Instantiate(tilePrefabs [prefabIndex]) as GameObject;
+
+        }
+        go.transform.SetParent(transform);
+        go.transform.position = Vector3.forward * spawnZ;
+        spawnZ += tileLength;
+        activeTiles.Add(go);
+    }
+
+    private void DeleteTile()
+    {
+        Destroy(activeTiles [0]);
+        activeTiles.RemoveAt(0);
+    }
+
+    private int RandomPrefabsIndex ()
+    {
+        if (tilePrefabs.Length <= 1)
+            return 0;
+        int randomIndex = lastPrefabIndex;
+        while (randomIndex == lastPrefabIndex) 
+        {
+            randomIndex = Random.Range (0, tilePrefabs.Length);
         }
 
-        LastPrefab = randomIndex;
+        lastPrefabIndex = randomIndex;
         return randomIndex;
     }
 }

@@ -303,6 +303,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    
     IEnumerator IncreaseSpeedRoutine()
     {
         while (true)
@@ -311,5 +312,6 @@ public class PlayerMovement : MonoBehaviour
             playerSpeed += speedIncreaseAmount;
         }
     }
+    
 }
  
