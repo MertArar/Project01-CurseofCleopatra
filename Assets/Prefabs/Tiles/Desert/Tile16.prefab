@@ -1376,6 +1376,7 @@ MonoBehaviour:
   - {fileID: 8811435536721229508}
   - {fileID: 0}
   - {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8873824282379235149
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,7 +1431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f73d75ea806d44df3b85c692de1a38fd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.33
+      value: 0.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f73d75ea806d44df3b85c692de1a38fd, type: 3}
       propertyPath: m_LocalPosition.z

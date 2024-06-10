@@ -728,6 +728,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &5699276639208852942
 GameObject:
   m_ObjectHideFlags: 0
@@ -2622,7 +2623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 339873bb615e4415f8d8b8edbd46368f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.9
+      value: 12.78
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 339873bb615e4415f8d8b8edbd46368f, type: 3}
       propertyPath: m_LocalPosition.y
