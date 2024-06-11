@@ -19,10 +19,13 @@ public class TrackManager : MonoBehaviour
         else
             randomTile = Random.Range(PlayerMovement.currentTile + 1, Tiles.Capacity);
 
-        float defaultHeight = 0f;
-        Vector3 newPosition = new Vector3(0, defaultHeight, Tiles[PlayerMovement.currentTile].transform.position.z + 100f);
+        float defaultHeight = transform.position.y;
+        
+        Vector3 newPosition = new Vector3(0, -defaultHeight, Tiles[PlayerMovement.currentTile].transform.position.z + 100f);
         Tiles[randomTile].transform.position = newPosition;
 
         PlayerMovement.currentTile = randomTile;
     }
+    
+    
 }

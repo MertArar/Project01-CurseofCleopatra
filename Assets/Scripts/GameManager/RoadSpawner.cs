@@ -1,78 +1,48 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class RoadSpawner : MonoBehaviour
 {
-    public GameObject[] tilePrefabs;
-    private List<GameObject> activeTiles;
-    
-    private Transform playerTransform;
-    private float spawnZ = -50.0f;
-    private float tileLength = 100.0f;
-    private int amountTilesOnScreen = 4;
-    private float safeZone = 125.0f;
-    private int lastPrefabIndex = 0;
+    public Transform player;
+    public GameObject[] roadPrefabs;
+    public int initialRoadCount = 5;
+    public float roadLength = 100f;
+    public float spawnDistance = 200f;
 
-    private void Start()
+    private Queue<GameObject> activeRoads = new Queue<GameObject>();
+    private float nextSpawnPosition = 0f;
+
+    void Start()
     {
-        activeTiles = new List<GameObject>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-        for (int i = 0; i < amountTilesOnScreen; i++)
+        for (int i = 0; i < initialRoadCount; i++)
         {
-            if (i < 2)
-            {
-                SpawnTile(0);
-            }
-            SpawnTile();
+            SpawnRandomRoad();
         }
     }
 
-    private void Update()
+    void Update()
     {
-        if (playerTransform.position.z - safeZone > (spawnZ - amountTilesOnScreen * tileLength))
+        if (player.position.z > nextSpawnPosition - spawnDistance)
         {
-            SpawnTile();
+            SpawnRandomRoad();
+            RemoveOldRoad();
         }
     }
 
-    private void SpawnTile(int prefabIndex = -1)
+    void SpawnRandomRoad()
     {
-        GameObject go;
-        if (prefabIndex == -1)
-        {
-            go = Instantiate(tilePrefabs [RandomPrefabsIndex()]) as GameObject;
-        }
-        else
-        {
-            go = Instantiate(tilePrefabs [prefabIndex]) as GameObject;
-
-        }
-        go.transform.SetParent(transform);
-        go.transform.position = Vector3.forward * spawnZ;
-        spawnZ += tileLength;
-        activeTiles.Add(go);
+        GameObject road = Instantiate(roadPrefabs[Random.Range(0, roadPrefabs.Length)], new Vector3(0, 0, nextSpawnPosition), Quaternion.identity);
+        activeRoads.Enqueue(road);
+        nextSpawnPosition += roadLength;
     }
 
-    private void DeleteTile()
+    void RemoveOldRoad()
     {
-        Destroy(activeTiles [0]);
-        activeTiles.RemoveAt(0);
-    }
-
-    private int RandomPrefabsIndex ()
-    {
-        if (tilePrefabs.Length <= 1)
-            return 0;
-        int randomIndex = lastPrefabIndex;
-        while (randomIndex == lastPrefabIndex) 
+        if (activeRoads.Count > initialRoadCount)
         {
-            randomIndex = Random.Range (0, tilePrefabs.Length);
+            GameObject oldRoad = activeRoads.Dequeue();
+            Destroy(oldRoad);
         }
-
-        lastPrefabIndex = randomIndex;
-        return randomIndex;
     }
 }

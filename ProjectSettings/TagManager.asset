@@ -11,6 +11,7 @@ TagManager:
   - City
   - Desert
   - NoCollider
+  - Section
   layers:
   - Default
   - TransparentFX
